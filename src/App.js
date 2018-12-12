@@ -57,8 +57,8 @@ class App extends Component {
             <Route path="/login" exact component={Login} />
             <Route path="/register" exact component={Register} />
 
+            <PrivateRoute path="/chat-room/:teamId?/:channelId?" exact component={ChatRoom} />
             <PrivateRoute path="/create-team" exact component={CreateTeam} />
-            <Route path="/" exact component={ChatRoom} />
           </div>
         </Router>
       </ApolloProvider>

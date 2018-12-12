@@ -65,6 +65,9 @@ const createTeamMutation = gql`
         path
         message
       }
+      team {
+        id
+      }
     }
   }
 `;
@@ -88,10 +91,10 @@ export default compose(
         return;
       }
 
-      const { sucess, errors } = response.data.createTeam;
+      const { sucess, errors, team } = response.data.createTeam;
 
       if (sucess) {
-        props.history.push('/');
+        props.history.push(`/chat-room/${team.id}`);
       } else {
         setErrors(errors);
       }

@@ -108,7 +108,7 @@ export default compose(
       if (sucess) {
         localStorage.setItem('token', token);
         localStorage.setItem('refreshToken', refreshToken);
-        props.history.push('/');
+        props.history.push('/chat-room');
       } else {
         setErrors(errors);
       }
