@@ -3,6 +3,7 @@ import { withFormik } from 'formik';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 
+import './Landing.css';
 import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
 
 function CreateTeam({ handleChange, handleSubmit, values, isSubmitting, errors }) {
@@ -80,7 +81,6 @@ export default compose(
       const { name } = values;
       let response = null;
 
-      // If not login, redirect to /
       try {
         response = await props.mutate({
           variables: { name }

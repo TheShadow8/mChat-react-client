@@ -122,8 +122,6 @@ export default compose(
 
       const { sucess, errors } = response.data.register;
 
-      console.log(response);
-
       if (sucess) {
         props.history.push('/login');
       } else {

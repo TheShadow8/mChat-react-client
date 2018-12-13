@@ -11,8 +11,8 @@ import { ApolloLink } from 'apollo-link';
 import PrivateRoute from './components/Utils/PrivateRoute';
 import Login from './components/Landing/Login';
 import Register from './components/Landing/Register';
+import CreateTeam from './components/Landing/CreateTeam';
 import ChatRoom from './components/ChatRoom/ChatRoom';
-import CreateTeam from './components/ChatRoom/CreateTeam';
 
 const httpLink = createHttpLink({ uri: 'http://localhost:8088/graphql' });
 
@@ -50,6 +50,9 @@ const client = new ApolloClient({
 });
 class App extends Component {
   render() {
+    // const token = localStorage.getItem('token');
+    // const Home = token ? ChatRoom : Login;
+
     return (
       <ApolloProvider client={client}>
         <Router>

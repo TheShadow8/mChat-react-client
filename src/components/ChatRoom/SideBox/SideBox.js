@@ -1,50 +1,65 @@
-import React from 'react';
-import { graphql } from 'react-apollo';
-import gql from 'graphql-tag';
-import findIndex from 'lodash/findIndex';
+import React, { Component } from 'react';
 import decode from 'jwt-decode';
+
+import './SideBox.css';
 import Channels from './Channels';
 import Teams from './Teams';
+import AddChannelModal from './AddChannelModal';
+import InviteMemberModal from './InviteMemberModal';
 
-const SideBox = ({ data: { loading, allTeams }, currentTeamId }) => {
-  if (loading) {
-    return null;
+export class SideBox extends Component {
+  state = {
+    toggleAddChannelModal: false,
+    toggleInviteMemberModal: false
+  };
+
+  toggleAddChannelModal = e => {
+    e.preventDefault();
+    this.setState({ toggleAddChannelModal: !this.state.toggleAddChannelModal });
+  };
+
+  toggleInviteMemberModal = e => {
+    e.preventDefault();
+    this.setState({ toggleInviteMemberModal: !this.state.toggleInviteMemberModal });
+  };
+
+  render() {
+    const { team, teams } = this.props;
+    const { toggleAddChannelModal, toggleInviteMemberModal } = this.state;
+
+    let username = '';
+
+    try {
+      const token = localStorage.getItem('token');
+      const { user } = decode(token);
+      username = user.username;
+    } catch (err) {}
+
+    return (
+      <React.Fragment>
+        <Teams teams={teams} />
+        <Channels
+          teamName={team.name}
+          username={username}
+          teamId={team.id}
+          channels={team.channels}
+          users={[{ id: 1, name: 'slackbot' }, { id: 2, name: 'user1' }]}
+          onAddChannelClick={this.toggleAddChannelModal}
+          onInvitePeopleClick={this.toggleInviteMemberModal}
+        />
+        <AddChannelModal
+          teamId={team.id}
+          onClose={this.toggleAddChannelModal}
+          open={toggleAddChannelModal}
+        />
+        <InviteMemberModal
+          teamId={team.id}
+          onClose={this.toggleInviteMemberModal}
+          open={toggleInviteMemberModal}
+        />
+      </React.Fragment>
+    );
   }
+}
 
-  const teamIndex = currentTeamId ? findIndex(allTeams, ['id', parseInt(currentTeamId, 10)]) : 0;
-  const team = allTeams[teamIndex];
-
-  let username = '';
-
-  try {
-    const token = localStorage.getItem('token');
-    const { user } = decode(token);
-    username = user.username;
-  } catch (err) {}
-
-  return (
-    <React.Fragment>
-      <Teams teams={allTeams.map(t => ({ id: t.id, letter: t.name.charAt(0).toUpperCase() }))} />
-      <Channels
-        teamName={team.name}
-        username={username}
-        channels={team.channels}
-        users={[{ id: 1, name: 'slackbot' }, { id: 2, name: 'user1' }]}
-      />
-    </React.Fragment>
-  );
-};
-
-const allTeamsQuery = gql`
-  {
-    allTeams {
-      id
-      name
-      channels {
-        id
-        name
-      }
-    }
-  }
-`;
-export default graphql(allTeamsQuery)(SideBox);
+export default SideBox;

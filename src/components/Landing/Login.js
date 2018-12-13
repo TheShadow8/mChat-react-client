@@ -103,8 +103,6 @@ export default compose(
 
       const { sucess, errors, token, refreshToken } = response.data.login;
 
-      console.log(response);
-
       if (sucess) {
         localStorage.setItem('token', token);
         localStorage.setItem('refreshToken', refreshToken);
