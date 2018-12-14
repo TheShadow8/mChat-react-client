@@ -105,6 +105,7 @@ export default compose(
           }
         }
       });
+      setSubmitting(false);
       values.name = '';
     }
   })

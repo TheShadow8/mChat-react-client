@@ -14,12 +14,16 @@ export class SideBox extends Component {
   };
 
   toggleAddChannelModal = e => {
-    e.preventDefault();
+    if (e) {
+      e.preventDefault();
+    }
     this.setState({ toggleAddChannelModal: !this.state.toggleAddChannelModal });
   };
 
   toggleInviteMemberModal = e => {
-    e.preventDefault();
+    if (e) {
+      e.preventDefault();
+    }
     this.setState({ toggleInviteMemberModal: !this.state.toggleInviteMemberModal });
   };
 
@@ -28,11 +32,14 @@ export class SideBox extends Component {
     const { toggleAddChannelModal, toggleInviteMemberModal } = this.state;
 
     let username = '';
+    let isOwner = false;
 
     try {
       const token = localStorage.getItem('token');
       const { user } = decode(token);
       username = user.username;
+      isOwner = user.id === team.owner;
+      console.log(isOwner);
     } catch (err) {}
 
     return (
@@ -46,6 +53,7 @@ export class SideBox extends Component {
           users={[{ id: 1, name: 'slackbot' }, { id: 2, name: 'user1' }]}
           onAddChannelClick={this.toggleAddChannelModal}
           onInvitePeopleClick={this.toggleInviteMemberModal}
+          isOwner={isOwner}
         />
         <AddChannelModal
           teamId={team.id}

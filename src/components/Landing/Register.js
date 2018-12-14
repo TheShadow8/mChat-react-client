@@ -85,7 +85,7 @@ function Register({ handleChange, handleSubmit, values, isSubmitting, errors }) 
             </Segment>
           </Form>
           <Message>
-            Already had an user ? <Link to="/">Log in</Link>
+            Already had an user ? <Link to="/login">Log in</Link>
           </Message>
           {errorList.length > 0 ? (
             <Message error header="There was some errors with your submission" list={errorList} />

@@ -90,11 +90,13 @@ export default compose(
         setSubmitting(false);
         return;
       }
-
+      // TODO: redirect to chat-room
+      //eslint-disable-next-line no-unused-vars
       const { sucess, errors, team } = response.data.createTeam;
 
       if (sucess) {
-        props.history.push(`/chat-room/${team.id}`);
+        props.history.push(`/`);
+        setSubmitting(false);
       } else {
         setErrors(errors);
       }
