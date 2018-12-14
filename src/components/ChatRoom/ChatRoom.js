@@ -6,7 +6,7 @@ import { Redirect } from 'react-router-dom';
 
 import SideBox from './SideBox/SideBox';
 import Header from './ChatBox/Header';
-import Messages from './ChatBox/Messages';
+import MessageBox from './ChatBox/MessageBox';
 import SendMessage from './ChatBox/SendMessage';
 import ChatRoomLayout from './ChatRoomLayout';
 
@@ -41,15 +41,8 @@ const ChatRoom = ({
         team={team}
       />
       {channel && <Header channelName={channel.name} />}
-      {channel && (
-        <Messages channelId={channel.id}>
-          <ul className="message-list">
-            <li />
-            <li />
-          </ul>
-        </Messages>
-      )}
-      {channel && <SendMessage channelName={channel.name} />}
+      {channel && <MessageBox channelId={channel.id} />}
+      {channel && <SendMessage channelName={channel.name} channelId={channel.id} />}
     </ChatRoomLayout>
   );
 };

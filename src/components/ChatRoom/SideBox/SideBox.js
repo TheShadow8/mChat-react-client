@@ -39,7 +39,6 @@ export class SideBox extends Component {
       const { user } = decode(token);
       username = user.username;
       isOwner = user.id === team.owner;
-      console.log(isOwner);
     } catch (err) {}
 
     return (

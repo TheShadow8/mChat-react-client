@@ -12,8 +12,8 @@ const InviteMemberModal = ({
   handleBlur,
   handleSubmit,
   isSubmitting,
-  touched,
-  errors
+  errors,
+  resetForm
 }) => {
   const errorCheck = {};
   const errorList = [];
@@ -26,8 +26,13 @@ const InviteMemberModal = ({
     }
   }
 
+  const onCloseHandle = e => {
+    onClose(e);
+    resetForm();
+  };
+
   return (
-    <Modal open={open} onClose={onClose}>
+    <Modal open={open} onClose={onCloseHandle}>
       <Modal.Header>Add Member to your Team</Modal.Header>
       <Modal.Content>
         <Form>
@@ -42,9 +47,8 @@ const InviteMemberModal = ({
               placeholder="User's email"
             />
           </Form.Field>
-          {/* {touched.email && errors.email ? errors.email[0] : null} */}
           <Form.Group widths="equal">
-            <Button disabled={isSubmitting} fluid onClick={onClose}>
+            <Button disabled={isSubmitting} fluid onClick={onCloseHandle}>
               Cancel
             </Button>
             <Button disabled={isSubmitting} onClick={handleSubmit} type="submit" fluid>
@@ -78,7 +82,7 @@ export default compose(
     mapPropsToValues: () => ({ email: '' }),
     handleSubmit: async (
       values,
-      { props: { onClose, teamId, mutate }, setSubmitting, setErrors }
+      { props: { onClose, teamId, mutate }, setSubmitting, setErrors, resetForm }
     ) => {
       const response = await mutate({
         variables: { teamId, email: values.email }
@@ -87,6 +91,7 @@ export default compose(
       if (sucess) {
         onClose();
         setSubmitting(false);
+        resetForm();
       } else {
         setSubmitting(false);
         setErrors(errors);

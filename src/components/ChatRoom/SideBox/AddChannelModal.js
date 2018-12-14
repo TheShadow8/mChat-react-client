@@ -15,7 +15,8 @@ const AddChannelModal = ({
   handleChange,
   handleBlur,
   handleSubmit,
-  isSubmitting
+  isSubmitting,
+  resetForm
 }) => {
   const errorCheck = {};
   const errorList = [];
@@ -27,8 +28,13 @@ const AddChannelModal = ({
       errorCheck[error.path] = true;
     }
   }
+  const onCloseHandle = e => {
+    onClose(e);
+    resetForm();
+  };
+
   return (
-    <Modal className="modal" open={open} onClose={onClose}>
+    <Modal className="modal" open={open} onClose={onCloseHandle}>
       <Modal.Header>Add Channel</Modal.Header>
       <Modal.Content>
         <Form>
@@ -44,7 +50,7 @@ const AddChannelModal = ({
             />
           </Form.Field>
           <Form.Group widths="equal">
-            <Button disabled={isSubmitting} fluid onClick={onClose}>
+            <Button disabled={isSubmitting} fluid onClick={onCloseHandle}>
               Cancel
             </Button>
             <Button disabled={isSubmitting} type="submit" onClick={handleSubmit} fluid>
@@ -82,7 +88,7 @@ export default compose(
     mapPropsToValues: () => ({ name: '' }),
     handleSubmit: async (
       values,
-      { props: { onClose, teamId, mutate }, setSubmitting, setErrors }
+      { props: { onClose, teamId, mutate }, setSubmitting, setErrors, resetForm }
     ) => {
       await mutate({
         variables: { teamId, name: values.name },
@@ -99,6 +105,7 @@ export default compose(
 
             onClose();
             setSubmitting(false);
+            resetForm();
           } else {
             setSubmitting(false);
             setErrors(errors);
@@ -106,7 +113,6 @@ export default compose(
         }
       });
       setSubmitting(false);
-      values.name = '';
     }
   })
 )(AddChannelModal);
