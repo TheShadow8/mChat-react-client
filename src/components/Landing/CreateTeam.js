@@ -18,7 +18,7 @@ function CreateTeam({ handleChange, handleSubmit, values, isSubmitting, errors }
     }
   }
   return (
-    <div className="login-form">
+    <div className="creat-team-form">
       <Grid textAlign="center" style={{ height: '100%' }} verticalAlign="middle">
         <Grid.Column style={{ maxWidth: 450 }}>
           <Header as="h2" color="teal" textAlign="center">
@@ -90,12 +90,11 @@ export default compose(
         setSubmitting(false);
         return;
       }
-      // TODO: redirect to chat-room
-      //eslint-disable-next-line no-unused-vars
+
       const { sucess, errors, team } = response.data.createTeam;
 
       if (sucess) {
-        props.history.push(`/`);
+        props.history.push(`/chat-room/${team.id}`);
         setSubmitting(false);
       } else {
         setErrors(errors);

@@ -47,4 +47,8 @@ const ChatRoom = ({
   );
 };
 
-export default graphql(allTeamsQuery)(ChatRoom);
+export default graphql(allTeamsQuery, {
+  options: {
+    fetchPolicy: 'network-only'
+  }
+})(ChatRoom);

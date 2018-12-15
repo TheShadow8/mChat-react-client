@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import { ApolloProvider } from 'react-apollo';
 import client from './apollo';
@@ -12,21 +12,17 @@ import ChatRoom from './components/ChatRoom/ChatRoom';
 
 class App extends Component {
   render() {
-    const Home = () => (
-      <div>
-        <Link to="/chat-room"> ChatRoom </Link>{' '}
-      </div>
-    );
+    const token = localStorage.getItem('token');
+
+    const Start = token ? ChatRoom : Login;
 
     return (
       <ApolloProvider client={client}>
         <Router>
           <div className="App">
-            <Route path="/login" exact component={Login} />
+            <Route path="/" exact component={Start} />
             <Route path="/register" exact component={Register} />
-            <PrivateRoute path="/" exact component={Home} />
-
-            <PrivateRoute path="/chat-room/:teamId?/:channelId?" component={ChatRoom} />
+            <PrivateRoute path="/chat-room/:teamId?/:channelId?" exact component={ChatRoom} />
             <PrivateRoute path="/create-team" exact component={CreateTeam} />
           </div>
         </Router>

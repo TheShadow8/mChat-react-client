@@ -85,7 +85,7 @@ function Register({ handleChange, handleSubmit, values, isSubmitting, errors }) 
             </Segment>
           </Form>
           <Message>
-            Already had an user ? <Link to="/login">Log in</Link>
+            Already had an user ? <Link to="/">Log in</Link>
           </Message>
           {errorList.length > 0 ? (
             <Message error header="There was some errors with your submission" list={errorList} />
@@ -123,7 +123,7 @@ export default compose(
       const { sucess, errors } = response.data.register;
 
       if (sucess) {
-        props.history.push('/login');
+        props.history.push('/');
       } else {
         setErrors(errors);
       }
