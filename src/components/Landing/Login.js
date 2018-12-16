@@ -6,6 +6,7 @@ import gql from 'graphql-tag';
 
 import './Landing.css';
 import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
+import { wsLink } from '../../apollo';
 
 function Login({ handleChange, handleSubmit, values, isSubmitting, errors }) {
   const errorCheck = {};
@@ -106,6 +107,7 @@ export default compose(
       if (sucess) {
         localStorage.setItem('token', token);
         localStorage.setItem('refreshToken', refreshToken);
+        wsLink.subscriptionClient.tryReconnect();
         props.history.push('/chat-room');
       } else {
         setErrors(errors);

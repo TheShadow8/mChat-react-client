@@ -49,7 +49,7 @@ export class SideBox extends Component {
           username={username}
           teamId={team.id}
           channels={team.channels}
-          users={[{ id: 1, name: 'slackbot' }, { id: 2, name: 'user1' }]}
+          users={[]}
           onAddChannelClick={this.toggleAddChannelModal}
           onInvitePeopleClick={this.toggleInviteMemberModal}
           isOwner={isOwner}

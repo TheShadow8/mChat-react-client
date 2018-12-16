@@ -1,5 +1,6 @@
 import React from 'react';
-import { graphql } from 'react-apollo';
+import { graphql, compose } from 'react-apollo';
+import gql from 'graphql-tag';
 import { allTeamsQuery } from '../Utils/graphql/team';
 import findIndex from 'lodash/findIndex';
 import { Redirect } from 'react-router-dom';
@@ -11,6 +12,7 @@ import SendMessage from './ChatBox/SendMessage';
 import ChatRoomLayout from './ChatRoomLayout';
 
 const ChatRoom = ({
+  mutate,
   data: { loading, allTeams, inviteTeams },
   match: {
     params: { teamId, channelId }
@@ -42,13 +44,30 @@ const ChatRoom = ({
       />
       {channel && <Header channelName={channel.name} />}
       {channel && <MessageBox channelId={channel.id} />}
-      {channel && <SendMessage channelName={channel.name} channelId={channel.id} />}
+      {channel && (
+        <SendMessage
+          channelName={channel.name}
+          channelId={channel.id}
+          onSubmit={async text => {
+            await mutate({ variables: { text, channelId: channel.id } });
+          }}
+        />
+      )}
     </ChatRoomLayout>
   );
 };
 
-export default graphql(allTeamsQuery, {
-  options: {
-    fetchPolicy: 'network-only'
+const createMessageMutation = gql`
+  mutation($channelId: Int!, $text: String!) {
+    createMessage(channelId: $channelId, text: $text)
   }
-})(ChatRoom);
+`;
+
+export default compose(
+  graphql(allTeamsQuery, {
+    options: {
+      fetchPolicy: 'network-only'
+    }
+  }),
+  graphql(createMessageMutation)
+)(ChatRoom);
